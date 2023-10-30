@@ -31,6 +31,8 @@ localparam R_Type_XOR  = 7'b0_000_100;
 localparam R_Type_SLL  = 7'b0_000_001;
 localparam R_Type_SRL  = 7'b0_000_101;
 
+localparam U_Type_LUI  = 7'bx_010_xxx;
+
 localparam I_Type_ADDI = 7'bx_001_000;
 localparam I_Type_ANDI = 7'bx_001_111;
 localparam I_Type_ORI  = 7'bx_001_110;
@@ -61,6 +63,8 @@ always@(selector)begin
 		R_Type_SLL:		alu_control_values = 4'b01_01;
 		
 		R_Type_SRL:		alu_control_values = 4'b01_10;
+		
+		U_Type_LUI:		alu_control_values = 4'b01_11;
 		
 		default: alu_control_values = 4'b00_00;
 	endcase

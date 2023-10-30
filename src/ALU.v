@@ -30,7 +30,7 @@ localparam OR  = 4'b00_11;
 localparam XOR = 4'b01_00;
 localparam SLL = 4'b01_01;
 localparam SRL = 4'b01_10;
-
+localparam LUI = 4'b01_11;
 	
    always @ (A_i or B_i or ALU_Operation_i)
      begin
@@ -42,6 +42,7 @@ localparam SRL = 4'b01_10;
 			XOR: ALU_Result_o = A_i ^ B_i;
 			SLL: ALU_Result_o = A_i << B_i;
 			SRL: ALU_Result_o = A_i >> B_i;
+			LUI: ALU_Result_o = B_i << 12;
 		
 		default:
 			ALU_Result_o = 0;
