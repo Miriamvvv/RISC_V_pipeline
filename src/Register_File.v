@@ -75,6 +75,10 @@ Register_ra
 
 	
 Register
+#(
+.initial_value(32'h1001_0400)
+
+)
 Register_sp
 (
 	.clk(clk),

@@ -33,6 +33,9 @@ localparam R_Type_SRL  = 7'b0_000_101;
 
 localparam U_Type_LUI  = 7'bx_010_xxx;
 
+localparam B_Type_BEQ  = 7'bx_011_000;
+localparam B_Type_BNE  = 7'bx_011_001;
+
 localparam I_Type_ADDI = 7'bx_001_000;
 localparam I_Type_ANDI = 7'bx_001_111;
 localparam I_Type_ORI  = 7'bx_001_110;
@@ -65,6 +68,10 @@ always@(selector)begin
 		R_Type_SRL:		alu_control_values = 4'b01_10;
 		
 		U_Type_LUI:		alu_control_values = 4'b01_11;
+		
+		B_Type_BEQ:		alu_control_values = 4'b10_00;
+		
+		B_Type_BNE:		alu_control_values = 4'b10_01;
 		
 		default: alu_control_values = 4'b00_00;
 	endcase
