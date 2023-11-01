@@ -1,15 +1,6 @@
-MAIN:
- add zero,zero, zero
-  add zero,zero, zero
-   add zero,zero, zero
-   bne zero, sp, salto
-    add zero,zero, zero
-     add zero,zero, zero
-      add zero,zero, zero
-salto:
-       add zero,zero, zero
-        add zero,zero, zero
-         add zero,zero, zero
-          add zero,zero, zero
-           add zero,zero, zero
-           bne zero, zero, salto
+addi t0,zero,5
+lui t1,0x10010
+sw t0,4(t1)
+lw t2,4(t1)
+lw t2,-4(t1)
+add zero,zero,zero

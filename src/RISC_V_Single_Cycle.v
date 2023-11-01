@@ -20,7 +20,7 @@
 module RISC_V_Single_Cycle
 #(
 	parameter PROGRAM_MEMORY_DEPTH = 64,
-	parameter DATA_MEMORY_DEPTH = 128
+	parameter DATA_MEMORY_DEPTH = 256
 )
 
 (
@@ -77,8 +77,14 @@ wire and_result_w;
 /**PC+IMM ADDER**/
 wire [31:0] pc_plus_imm_result_w;
 
-/**Multiplexer MUX PC+4 OR +C+IMM**/
+/**Multiplexer PC+4 OR +C+IMM**/
 wire [31:0] PC_plus_4_or_PC_plus_imm_w;
+
+/**Multiplexer MUX_ALU_RESULT_READ_DATA**/
+wire [31:0] mux_alu_result_read_data_w;
+
+/**DATA_MEMORY**/
+wire [31:0]read_data_w;
 
 
 //******************************************************************/
@@ -162,7 +168,7 @@ REGISTER_FILE_UNIT
 	.Write_Register_i(instruction_bus_w[11:7]),
 	.Read_Register_1_i(instruction_bus_w[19:15]),
 	.Read_Register_2_i(instruction_bus_w[24:20]),
-	.Write_Data_i(alu_result_w),
+	.Write_Data_i(mux_alu_result_read_data_w),
 	.Read_Data_1_o(read_data_1_w),
 	.Read_Data_2_o(read_data_2_w)
 
@@ -239,6 +245,37 @@ MUX_PC_4_OR_PC_IMM
 	.Mux_Data_1_i(pc_plus_imm_result_w),
 	
 	.Mux_Output_o(PC_plus_4_or_PC_plus_imm_w)
+
+);
+
+Data_Memory 
+#(	
+	.DATA_WIDTH(32),
+	.MEMORY_DEPTH(DATA_MEMORY_DEPTH)
+
+)
+DATA_MEMORY_UNIT
+(
+	.clk(clk),
+	.Mem_Write_i(mem_write_w),
+	.Mem_Read_i(mem_read_w),
+	.Write_Data_i(read_data_2_w),
+	.Address_i(alu_result_w),
+
+	.Read_Data_o(read_data_w)
+);
+	
+Multiplexer_2_to_1
+#(
+	.NBits(32)
+)
+MUX_ALU_RESULT_READ_DATA
+(
+	.Selector_i(mem_to_reg_w),
+	.Mux_Data_0_i(alu_result_w),
+	.Mux_Data_1_i(read_data_w),
+	
+	.Mux_Output_o(mux_alu_result_read_data_w)
 
 );
 

@@ -29,6 +29,8 @@ localparam R_Type 		= 7'b0110011;
 localparam I_Type_Logic = 7'b0010011;
 localparam U_Type			= 7'b0110111;
 localparam B_Type			= 7'b1100011;
+localparam S_Type       = 7'b0100011;
+localparam I_Type_Load  = 7'b0000011;
 
 reg [8:0] control_values;
 
@@ -38,6 +40,8 @@ always@(OP_i) begin
 		I_Type_Logic:  control_values	= 9'b001_00_1_001;
 		U_Type:			control_values = 9'b001_00_1_010;
 		B_Type:			control_values = 9'b100_00_0_011;
+		S_Type:			control_values = 9'b000_01_1_100;
+		I_Type_Load:	control_values = 9'b011_10_1_101;
 		
 		default:
 			control_values= 9'b000_00_0_000;
@@ -46,13 +50,13 @@ end
 
 assign Branch_o = control_values[8];
 
-assign Mem_to_Reg_o = control_values[7];
+assign Mem_to_Reg_o = control_values[7];//
 
 assign Reg_Write_o = control_values[6];
 
-assign Mem_Read_o = control_values[5];
+assign Mem_Read_o = control_values[5];//
 
-assign Mem_Write_o = control_values[4];
+assign Mem_Write_o = control_values[4];//
 
 assign ALU_Src_o = control_values[3];
 

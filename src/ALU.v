@@ -33,6 +33,7 @@ localparam SRL = 4'b01_10;
 localparam LUI = 4'b01_11;
 localparam BEQ = 4'b10_00;
 localparam BNE = 4'b10_01;
+
 	
    always @ (A_i or B_i or ALU_Operation_i)
      begin
@@ -47,6 +48,7 @@ localparam BNE = 4'b10_01;
 			LUI: ALU_Result_o = B_i << 12;
 			BEQ: ALU_Result_o = (A_i == B_i)? 1'b0 : 1'b1;
 			BNE: ALU_Result_o = (A_i != B_i)? 1'b0 : 1'b1;
+ 
 		
 		default:
 			ALU_Result_o = 0;
