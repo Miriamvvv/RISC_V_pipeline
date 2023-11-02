@@ -47,6 +47,7 @@ wire mem_read_w;
 wire [2:0] alu_op_w;
 wire branch_w;
 wire jal_w;
+wire jalr_w;
 
 /** Program Counter**/
 wire [31:0] pc_plus_4_w;
@@ -94,6 +95,8 @@ wire or_result_w;
 /**Multiplexer MUX_PC_PLUS_4_OR_MUX_RESULT**/
 wire [31:0] mux_pc_4_or_mux_result_w;
 
+/**Multiplexer MUX_OR_ALU_RESULT**/
+wire [31:0] mux_or_alu_result;
 
 //******************************************************************/
 //******************************************************************/
@@ -113,7 +116,8 @@ CONTROL_UNIT
 	.Mem_Read_o(mem_read_w),
 	.Mem_Write_o(mem_write_w),
 	.Branch_o(branch_w),
-	.Jal_o(jal_w)
+	.Jal_o(jal_w),
+	.Jalr_o(jalr_w)
 );
 
 
@@ -137,7 +141,7 @@ PC_REGISTER
 (
 	 .clk(clk),
 	 .reset(reset),
-	 .Next_PC(PC_plus_4_or_PC_plus_imm_w),
+	 .Next_PC(mux_or_alu_result),
 	 .PC_Value(pc_w)
 );
 
@@ -311,6 +315,20 @@ MUX_PC_PLUS_4_OR_MUX_RESULT
 	.Mux_Output_o(mux_pc_4_or_mux_result_w)
 
 );
+Multiplexer_2_to_1
+#(
+	.NBits(32)
+)
+MUX_OR_ALU_RESULT
+(
+	.Selector_i(jalr_w),
+	.Mux_Data_0_i(PC_plus_4_or_PC_plus_imm_w),
+	.Mux_Data_1_i(alu_result_w),
+	
+	.Mux_Output_o(mux_or_alu_result)
+
+);
+
 assign alu_result = alu_result_w;
 endmodule
 
