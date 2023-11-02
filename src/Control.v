@@ -22,7 +22,8 @@ module Control
 	output Mem_Write_o,
 	output ALU_Src_o,
 	output Reg_Write_o,
-	output [2:0]ALU_Op_o
+	output [2:0]ALU_Op_o,
+	output Jal_o
 );
 
 localparam R_Type 		= 7'b0110011;
@@ -31,22 +32,28 @@ localparam U_Type			= 7'b0110111;
 localparam B_Type			= 7'b1100011;
 localparam S_Type       = 7'b0100011;
 localparam I_Type_Load  = 7'b0000011;
+localparam J_Type       = 7'b1101111;
+localparam I_Type_Jump  = 7'b1100111;
 
-reg [8:0] control_values;
+reg [9:0] control_values;
 
 always@(OP_i) begin
-	case(OP_i)//                          876_54_3_210
-		R_Type: 			control_values = 9'b001_00_0_000;
-		I_Type_Logic:  control_values	= 9'b001_00_1_001;
-		U_Type:			control_values = 9'b001_00_1_010;
-		B_Type:			control_values = 9'b100_00_0_011;
-		S_Type:			control_values = 9'b000_01_1_100;
-		I_Type_Load:	control_values = 9'b011_10_1_101;
+	case(OP_i)//                           9876_54_3_210
+		R_Type: 			control_values = 10'b0001_00_0_000;
+		I_Type_Logic:  control_values	= 10'b0001_00_1_001;
+		U_Type:			control_values = 10'b0001_00_1_010;
+		B_Type:			control_values = 10'b0100_00_0_011;
+		S_Type:			control_values = 10'b0000_01_1_100;
+		I_Type_Load:	control_values = 10'b0011_10_1_101;
+		J_Type:			control_values = 10'b1101_00_1_110;
+		
 		
 		default:
-			control_values= 9'b000_00_0_000;
+			control_values= 10'b0000_00_0_000;
 		endcase
 end	
+
+assign Jal_o = control_values[9];
 
 assign Branch_o = control_values[8];
 

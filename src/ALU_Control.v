@@ -46,6 +46,10 @@ localparam S_Type_SW   		= 7'bx_100_010;
 
 localparam I_Type_Load_LW  = 7'bx_101_010;
 
+localparam J_Type_JAL      = 7'bx_110_xxx;
+
+localparam I_Type_Jump_JALR= 7'bx_111_000;
+
 
 
 reg [3:0] alu_control_values;
@@ -55,33 +59,38 @@ assign selector = {funct7_i, ALU_Op_i, funct3_i};
 
 always@(selector)begin
 	casex(selector)
-		R_Type_SUB:		alu_control_values = 4'b00_01;
+		R_Type_SUB:			alu_control_values = 4'b00_01;
 
-		R_Type_ADD: 	alu_control_values = 4'b00_00;
-		I_Type_ADDI:	alu_control_values = 4'b00_00;
+		R_Type_ADD: 		alu_control_values = 4'b00_00;
+		I_Type_ADDI:		alu_control_values = 4'b00_00;
 		
-		R_Type_AND:		alu_control_values = 4'b00_10;
-		I_Type_ANDI:	alu_control_values = 4'b00_10;
+		R_Type_AND:			alu_control_values = 4'b00_10;
+		I_Type_ANDI:		alu_control_values = 4'b00_10;
 		
-		R_Type_OR:		alu_control_values = 4'b00_11;
-		I_Type_ORI:	   alu_control_values = 4'b00_11;
+		R_Type_OR:			alu_control_values = 4'b00_11;
+		I_Type_ORI:	   	alu_control_values = 4'b00_11;
 		
-		R_Type_XOR:		alu_control_values = 4'b01_00;
-		I_Type_XORI:	alu_control_values = 4'b01_00;
+		R_Type_XOR:			alu_control_values = 4'b01_00;
+		I_Type_XORI:		alu_control_values = 4'b01_00;
 		
-		R_Type_SLL:		alu_control_values = 4'b01_01;
+		R_Type_SLL:			alu_control_values = 4'b01_01;
 		
-		R_Type_SRL:		alu_control_values = 4'b01_10;
+		R_Type_SRL:			alu_control_values = 4'b01_10;
 		
-		U_Type_LUI:		alu_control_values = 4'b01_11;
+		U_Type_LUI:			alu_control_values = 4'b01_11;
 		
-		B_Type_BEQ:		alu_control_values = 4'b10_00;
+		B_Type_BEQ:			alu_control_values = 4'b10_00;
 		
-		B_Type_BNE:		alu_control_values = 4'b10_01;
+		B_Type_BNE:			alu_control_values = 4'b10_01;
 		
-		I_Type_Load_LW:		alu_control_values = 4'b00_00;
+		I_Type_Load_LW:	alu_control_values = 4'b00_00;
 		
-		S_Type_SW:		alu_control_values = 4'b00_00;
+		S_Type_SW:			alu_control_values = 4'b00_00;
+		
+		J_Type_JAL:			alu_control_values = 4'b00_00;
+		
+		I_Type_Jump_JALR: alu_control_values = 4'b00_00;
+		
 		
 		
 		

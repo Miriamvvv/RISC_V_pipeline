@@ -26,8 +26,9 @@ module RISC_V_Single_Cycle
 (
 	// Inputs
 	input clk,
-	input reset
+	input reset,
 
+	output [31:0] alu_result
 );
 //******************************************************************/
 //******************************************************************/
@@ -45,6 +46,7 @@ wire mem_write_w;
 wire mem_read_w;
 wire [2:0] alu_op_w;
 wire branch_w;
+wire jal_w;
 
 /** Program Counter**/
 wire [31:0] pc_plus_4_w;
@@ -86,6 +88,12 @@ wire [31:0] mux_alu_result_read_data_w;
 /**DATA_MEMORY**/
 wire [31:0]read_data_w;
 
+/**OR**/
+wire or_result_w;
+
+/**Multiplexer MUX_PC_PLUS_4_OR_MUX_RESULT**/
+wire [31:0] mux_pc_4_or_mux_result_w;
+
 
 //******************************************************************/
 //******************************************************************/
@@ -104,7 +112,8 @@ CONTROL_UNIT
 	.Mem_to_Reg_o(mem_to_reg_w),
 	.Mem_Read_o(mem_read_w),
 	.Mem_Write_o(mem_write_w),
-	.Branch_o(branch_w)
+	.Branch_o(branch_w),
+	.Jal_o(jal_w)
 );
 
 
@@ -168,7 +177,7 @@ REGISTER_FILE_UNIT
 	.Write_Register_i(instruction_bus_w[11:7]),
 	.Read_Register_1_i(instruction_bus_w[19:15]),
 	.Read_Register_2_i(instruction_bus_w[24:20]),
-	.Write_Data_i(mux_alu_result_read_data_w),
+	.Write_Data_i(mux_pc_4_or_mux_result_w),
 	.Read_Data_1_o(read_data_1_w),
 	.Read_Data_2_o(read_data_2_w)
 
@@ -240,7 +249,7 @@ Multiplexer_2_to_1
 )
 MUX_PC_4_OR_PC_IMM
 (
-	.Selector_i(and_result_w),
+	.Selector_i(or_result_w),
 	.Mux_Data_0_i(pc_plus_4_w),
 	.Mux_Data_1_i(pc_plus_imm_result_w),
 	
@@ -279,5 +288,29 @@ MUX_ALU_RESULT_READ_DATA
 
 );
 
+OR_Operator
+OR_JUMP
+(
+	
+	.Data0_i(jal_w),
+	.Data1_i(and_result_w),
+	
+	.Result_o(or_result_w)
+);
+
+Multiplexer_2_to_1
+#(
+	.NBits(32)
+)
+MUX_PC_PLUS_4_OR_MUX_RESULT
+(
+	.Selector_i(jal_w),
+	.Mux_Data_0_i(mux_alu_result_read_data_w),
+	.Mux_Data_1_i(pc_plus_4_w),
+	
+	.Mux_Output_o(mux_pc_4_or_mux_result_w)
+
+);
+assign alu_result = alu_result_w;
 endmodule
 

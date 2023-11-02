@@ -1,6 +1,6 @@
-addi t0,zero,5
-lui t1,0x10010
-sw t0,4(t1)
-lw t2,4(t1)
-lw t2,-4(t1)
+main:
 add zero,zero,zero
+add zero,zero,zero
+add zero,zero,zero
+add zero,zero,zero
+jal t1, main
