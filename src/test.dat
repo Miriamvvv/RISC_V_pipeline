@@ -1,50 +1,20 @@
-10010db7
-000d83b3
-00100293
-00300493
-0053a023
-00928863
-00128293
-02038393
-ff1ff06f
-00438e13
-00838e93
-000d8393
-fe038393
-00048f33
-00100913
-008000ef
-0880006f
-ffc10113
-00112023
-012f1c63
-02038393
-0003a023
-01eea023
-fe0e8e93
-05c0006f
-ffff0f13
-000e0293
-000e8e13
-00028e93
-fd1ff0ef
-001f0f13
-000e0293
-000e8e13
-00028e93
-02038393
-0003a023
-01eea023
-fe0e8e93
-ffff0f13
-00038293
-000e0393
-00028e13
-f9dff0ef
-001f0f13
-00038293
-000e0393
-00028e13
-00012083
-00410113
-00008067
+lw t0, 0(x10)
+sw t0, 0(x11)
+
+beq t0, t1, igual
+bne t0, t1, no_igual
+
+jalr t0, t1, 0
+
+mi_funcion:
+    # Código de la función aquí
+    jalr x0, x0, 0
+
+igual:
+    # Código si t0 es igual a 42
+    jalr x0, x0, 0
+
+no_igual:
+    # Código si t0 no es igual a 42
+    jalr x0, x0, 0
+

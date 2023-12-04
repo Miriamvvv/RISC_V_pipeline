@@ -12,9 +12,9 @@
 * Author:
 *	Dr. José Luis Pizano Escalante
 * email:
-*	luispizano@iteso.mx
+* luispizano@iteso.mx
 * Date:
-*	16/08/2021
+*  16/08/2021
 ******************************************************************/
 
 module RISC_V_Single_Cycle
